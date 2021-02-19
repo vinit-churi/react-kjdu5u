@@ -1,10 +1,23 @@
 import React from "react";
+import { useQuery } from "react-query";
+
+
+
 const People = () => {
+  const { isLoading, error, data } = useQuery("people", async () =>
+    fetch("https://swapi.dev/api/people/").then(res => res.json())
+  );
+  if (isLoading) return <h3>Loading...</h3>;
+
+  if (error) return <h3>"An error has occurred: " + {error.message}</h3>;
+
   return (
     <>
       <div>
-        <h3>Pople</h3>
-
+        <h3>People</h3>
+        {console.log(data.results[0])}
+        <div>{data.results.map((people) => <p>{people.name}</p>)}
+        </div>
       </div>
     </>
   );
